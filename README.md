@@ -15,6 +15,34 @@ tested in Windows
 # examples
 
 ```
+folder tree:
+.
+│  git-cheat-sheet.png
+│  gitbook.md
+│  introduction.md
+│  SUMMARY.md
+│  
+├─child1
+│      environment.md
+│      git-basics.md
+│      
+└─child2
+    │  mailing-list.md
+    │  markdown-basics.md
+    │  opening.md
+    │  
+    ├─child233
+    │      mailing-list.md
+    │      markdown-basics.md
+    │      opening.md
+    │      
+    └─child233 - copy
+            mailing-list.md
+            markdown-basics.md
+            opening.md
+
+output SUMMARY.md:
+
 # Summary
 
 - child1
