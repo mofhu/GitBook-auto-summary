@@ -49,15 +49,6 @@ def main():
     print('Input directory is: ', dir_input) 
 
     # output to flie
-    if os.path.exists(os.path.join(dir_input, 'SUMMARY.md')):
-        # check if there is an SUMMARY.md in directory.
-        s = input('SUMMARY.md exists at "%s", type o to confirm overwrite, other to cancel.\n'%(dir_input))
-        if s is not 'o':
-            print('Not processing.')
-            return None
-        else: 
-            print('Overwrite.')
-
     output = open(os.path.join(dir_input, 'SUMMARY.md'), 'w') # output to dir_input with "SUMMARY.md"
     output.write('# Summary\n\n')
     # todo: seems that only windows uses \, os/linux uses / for directory, need to test
