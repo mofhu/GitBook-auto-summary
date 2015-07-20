@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Gitbook-auto-summary : Automatically update Summary.md of a GitBook repo">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Gitbook-auto-summary</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Frank-the-Obscure/GitBook-auto-summary">View on GitHub</a>
+
+          <h1 id="project_title">Gitbook-auto-summary</h1>
+          <h2 id="project_tagline">Automatically update Summary.md of a GitBook repo</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Frank-the-Obscure/GitBook-auto-summary/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Frank-the-Obscure/GitBook-auto-summary/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="gitbook-auto-summary" class="anchor" href="#gitbook-auto-summary" aria-hidden="true"><span class="octicon octicon-link"></span></a>GitBook-auto-summary</h1>
+
+<p>Automatically update SUMMARY.md of a GitBook repo</p>
+
+<p>自动输出 GitBook 目录的 SUMMARY.md 文件.</p>
+
+<p>By <a href="https://github.com/Frank-the-Obscure">Frank-the-Obscure @ GitHub</a></p>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>usage</h1>
+
+<ol>
+<li>
+<code>$ python gitbook-auto-summary.py</code>
+
+<ul>
+<li>use argument <code>-o</code> to overwrite SUMMARY.md without checking.</li>
+</ul>
+</li>
+<li>input directory(it should be the <em>root</em> directory of a GitBook repo)</li>
+<li>the auto summary file <code>SUMMARY.md</code> will be under the same directory.</li>
+</ol>
+
+<p>Tested with Python 3.4.3 in Windows 7 and OS 10.10</p>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>examples</h1>
+
+<pre><code>folder tree:
+.
+├── README.md
+├── SUMMARY.md
+├── md
+│   └── SUMMARY.md
+├── nomd
+└── os-and-os-path.md
+</code></pre>
+
+<p>output SUMMARY.md:</p>
+
+<pre><code># Summary
+
+- [os-and-os-path](./os-and-os-path.md)
+- [README](./README.md)
+- md
+  - [SUMMARY](md/SUMMARY.md)
+
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Gitbook-auto-summary maintained by <a href="https://github.com/Frank-the-Obscure">Frank-the-Obscure</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
