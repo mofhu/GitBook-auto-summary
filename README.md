@@ -9,6 +9,7 @@ tested in Windows
 # usage
 
 1. `$ python gitbook-auto-summary.py`
+  - use `$ python gitbook-auto-summary-o.py` to overwrite SUMMARY.md without checking.
 2. input directory(it should be the *root* directory of GitBook repo), enter
 3. the auto summary file `SUMMARY.md` will be under the same directory.
 
