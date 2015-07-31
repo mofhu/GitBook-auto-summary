@@ -6,6 +6,7 @@
 import os
 import re
 from sys import argv
+import argparse
 
 def output_markdown(dire, base_dir, output_file, iter_depth=0):
     """Main iterator for get information from every file/folder
@@ -25,7 +26,7 @@ def output_markdown(dire, base_dir, output_file, iter_depth=0):
                 output_markdown(file_or_path, base_dir, output_file, iter_depth + 1) # iteration
         else:
             # isfile
-            if re.search('.md$', filename): # re to find target markdown files, $ for matching end of filename
+            if re.search('.md$|.markdown$', filename): # re to find target markdown files, $ for matching end of filename
                 # print(filename, filename[:-3], 'match') # string cut using pathonic slicing :) (https://docs.python.org/3.4/tutorial/introduction.html#strings)
                 if filename != 'SUMMARY.md' or iter_depth != 0: # escape SUMMARY.md
                     # print(os.path.join(os.path.relpath(dire, dir_input), filename))
@@ -41,7 +42,7 @@ def is_mdfile(dire):
     """
     for root, dirs, files in os.walk(dire):
         for filename in files:
-            if re.search('.md$', filename):
+            if re.search('.md$|.markdown$', filename):
                 return True
     return False
 
@@ -59,33 +60,31 @@ def sort_dir_file(listdir, dire):
     return list_of_file  
 
 def main():
-    overwrite = False
-    if len(argv) == 2:
-        if argv[1] == '-o':
-            overwrite = True
-    print(overwrite, 'overwrite')
+    combine = []
 
-    combine = [] #combined protein list
-
-    dir_input = input('Please input path(e.g. D:/Study/Inbox): ')
-    print('Input directory is: ', dir_input) 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', '--overwrite', help='overwrite on SUMMARY.md', 
+                        action="store_true")
+    parser.add_argument('directory', help='the directory of your GitBook root')
+    args = parser.parse_args()
+    overwrite = args.overwrite
+    dir_input = args.directory
+    if args.overwrite:
+        print(dir_input, 'overwrite')
+    else:
+        print(dir_input)
 
     # output to flie
     if overwrite == False and os.path.exists(os.path.join(dir_input, 'SUMMARY.md')):
         # check if there is an SUMMARY.md in directory.
-        s = input('SUMMARY.md exists at "%s", type o to confirm overwrite, other to cancel.\n'%(dir_input))
-        if s is not 'o':
-            print('Not processing.')
-            return None
-        else: 
-            print('Overwrite.')
-
-    output = open(os.path.join(dir_input, 'SUMMARY.md'), 'w') # output to dir_input with "SUMMARY.md"
+        output = open(os.path.join(dir_input, 'SUMMARY-GitBook-auto-summary.md'), 'w') # output to dir_input with "SUMMARY.md"
+    else: # no file there
+        output = open(os.path.join(dir_input, 'SUMMARY.md'), 'w') # output to dir_input with "SUMMARY.md"
     output.write('# Summary\n\n')
     # todo: seems that only windows uses \, os/linux uses / for directory, need to test
     output_markdown(dir_input, dir_input, output)
 
-    print('auto summary finished:)')
+    print('auto summary finished:) ')
     return 0
 
 if __name__ == '__main__':
