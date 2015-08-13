@@ -8,7 +8,7 @@ import re
 from sys import argv
 import argparse
 
-def output_markdown(dire, base_dir, output_file, iter_depth=0):
+def output_markdown(dire, base_dir, output_file, append, iter_depth=0):
     """Main iterator for get information from every file/folder
 
     i: directory, base dire(for calulate relative path), output file, iter depth.
@@ -23,7 +23,7 @@ def output_markdown(dire, base_dir, output_file, iter_depth=0):
             if is_mdfile(file_or_path):
                 # if there is .md files in the folder, output folder name and iteration
                 output_file.write('  ' * iter_depth + '- ' + filename + '\n') # write dir information
-                output_markdown(file_or_path, base_dir, output_file, iter_depth + 1) # iteration
+                output_markdown(file_or_path, base_dir, output_file, append, iter_depth + 1) # iteration
         else:
             # isfile
             if re.search('.md$|.markdown$', filename): # re to find target markdown files, $ for matching end of filename
@@ -31,7 +31,7 @@ def output_markdown(dire, base_dir, output_file, iter_depth=0):
                 if filename != 'SUMMARY.md' or iter_depth != 0: # escape SUMMARY.md
                     # print(os.path.join(os.path.relpath(dire, dir_input), filename))
                     output_file.write('  ' * iter_depth + 
-                        '- [%s](%s)\n'%(filename[:-3], os.path.join(os.path.relpath(dire, base_dir), filename)))
+                        '- [%s](%s)\n'%(write_md_filename(filename, append, output_file), os.path.join(os.path.relpath(dire, base_dir), filename)))
                     # iter length for indent, then output markdown list, uses relpath and join.
 
 def is_mdfile(dire):
@@ -59,21 +59,44 @@ def sort_dir_file(listdir, dire):
         list_of_file.append(dire)
     return list_of_file  
 
+def write_md_filename(filename, append, output_file):
+    print(append, filename) #
+    if append:
+        for line in former_summary_list:
+            if re.search(filename, line):
+                print('append', filename)#
+                s = re.search('\[.*\]\(',line)
+                print(s.group()[1:-2])
+                return s.group()[1:-2]
+        else:
+            return filename[:-3]        
+    else:
+        return filename[:-3]
+
 def main():
     combine = []
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', '--overwrite', help='overwrite on SUMMARY.md', 
                         action="store_true")
+    parser.add_argument('-a', '--append', help='append on SUMMARY.md', 
+                        action="store_true")
     parser.add_argument('directory', help='the directory of your GitBook root')
     args = parser.parse_args()
     overwrite = args.overwrite
+    append = args.append
     dir_input = args.directory
     if args.overwrite:
         print(dir_input, 'overwrite')
     else:
         print(dir_input)
-
+    if args.append:
+        print('append')
+        global former_summary_list
+        with open(os.path.join(dir_input, 'SUMMARY.md')) as f:
+            former_summary_list = f.readlines()
+            print(former_summary_list)
+            f.close()
     # output to flie
     if overwrite == False and os.path.exists(os.path.join(dir_input, 'SUMMARY.md')):
         # check if there is an SUMMARY.md in directory.
@@ -82,7 +105,7 @@ def main():
         output = open(os.path.join(dir_input, 'SUMMARY.md'), 'w') # output to dir_input with "SUMMARY.md"
     output.write('# Summary\n\n')
     # todo: seems that only windows uses \, os/linux uses / for directory, need to test
-    output_markdown(dir_input, dir_input, output)
+    output_markdown(dir_input, dir_input, output, append)
 
     print('auto summary finished:) ')
     return 0
