@@ -40,46 +40,205 @@
 
 <p>By <a href="https://github.com/Frank-the-Obscure">Frank-the-Obscure @ GitHub</a></p>
 
-<h1>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>usage</h1>
-
-<ol>
-<li>
-<code>$ python gitbook-auto-summary.py</code>
-
-<ul>
-<li>use argument <code>-o</code> to overwrite SUMMARY.md without checking.</li>
-</ul>
-</li>
-<li>input directory(it should be the <em>root</em> directory of a GitBook repo)</li>
-<li>the auto summary file <code>SUMMARY.md</code> will be under the same directory.</li>
-</ol>
-
 <p>Tested with Python 3.4.3 in Windows 7 and OS 10.10</p>
 
 <h1>
-<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>examples</h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
 
-<pre><code>folder tree:
-.
+<ol>
+<li><code>$ python gitbook-auto-summary.py GitBook_repo_root</code></li>
+<li>The auto summary file <code>SUMMARY-GitBook-auto-summary.md</code> will be created under the same directory.
+
+<ul>
+<li>Markdown links of <code>[filename](file link)</code> will be created by default.</li>
+<li>Files is sorted from files a-z, then folders a-z</li>
+</ul>
+</li>
+<li>Advanced: using parameters
+
+<ul>
+<li>Use <code>-a</code> or <code>--append</code> to append new markdown files. <strong>Link name in former SUMMARY.md will not be changed</strong>. This is very useful when appending new file to an existing summary.</li>
+<li>Use <code>-o</code> or <code>--overwrite</code> to overwrite on SUMMARY.md. You MUST take care before overwriting!</li>
+</ul>
+</li>
+</ol>
+
+<hr>
+
+<ol>
+<li>运行<code>$ python gitbook-auto-summary.py GitBook_repo_root</code>
+</li>
+<li>脚本将自动在同一个目录生成 <code>SUMMARY-GitBook-auto-summary.md</code> 
+
+<ul>
+<li>默认 link 为 <code>[filename](file link)</code> </li>
+<li>排序方式为按文件名 a-z, 随后是文件夹名 a-z, 只有含有 markdown 文件的文件夹会被输出</li>
+</ul>
+</li>
+<li>高级用法: 使用参数
+
+<ul>
+<li>
+<code>-a</code> or <code>--append</code> 添加新文件. <strong>已有的文件链接名称不会被修改</strong>. 这一参数在你修改过某些链接名称后, 只想添加新文件时十分有效.
+
+<ul>
+<li>链接地址会被正确更新</li>
+<li>链接排序也会被更新: 如果对排序有特殊要求, 可考虑运行后 copy 想要的链接到目前的 SUMMARY.md 中.</li>
+</ul>
+</li>
+<li>
+<code>-o</code> or <code>--overwrite</code> 直接修改 SUMMARY.md. 由于 SUMMARY.md 会被修改, 请务必小心使用这个功能!</li>
+</ul>
+</li>
+</ol>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h1>
+
+<h3>
+<a id="basic" class="anchor" href="#basic" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic:</h3>
+
+<p>eg1. folder tree:</p>
+
+<pre><code>eg1.
 ├── README.md
 ├── SUMMARY.md
-├── md
-│   └── SUMMARY.md
-├── nomd
-└── os-and-os-path.md
+├── concept-and-definition.md
+├── language-secret.md
+├── preface.md
+├── rationality.md
+├── study-under-uncertainty.md
+├── twisted.png
+└── wheel-of-python.png
 </code></pre>
 
-<p>output SUMMARY.md:</p>
+<p><code>python gitbook-auto-summary.py eg1</code></p>
+
+<p>output SUMMARY-GitBook-auto-summary.md:</p>
 
 <pre><code># Summary
 
-- [os-and-os-path](./os-and-os-path.md)
+- [concept-and-definition](./concept-and-definition.md)
+- [language-secret](./language-secret.md)
+- [preface](./preface.md)
+- [rationality](./rationality.md)
 - [README](./README.md)
-- md
-  - [SUMMARY](md/SUMMARY.md)
+- [study-under-uncertainty](./study-under-uncertainty.md)
 
 </code></pre>
+
+<p>Note:</p>
+
+<ul>
+<li>only .md file converted to link</li>
+<li>SUMMARY.md in input directory is ignored</li>
+</ul>
+
+<p>eg2. folder tree:</p>
+
+<pre><code>eg2.
+├── README.md
+├── SUMMARY-GitBook-auto-summary.md
+├── SUMMARY.md
+├── for-myself-at-16
+│   ├── README.md
+│   ├── SUMMARY.md
+│   ├── twisted.png
+│   └── wheel-of-python.png
+├── nomd
+│   └── Untitled.ipynb
+└── python-1-to-n
+    ├── README.md
+    ├── SUMMARY.md
+    ├── chaos-to-telegram
+    │   └── telegram.md
+    ├── gitbook-auto-summary
+    │   ├── argparse.md
+    │   ├── gitbook-auto-summary.md
+    │   └── os-and-os-path.md
+    └── mahjong
+        ├── chaos-to-bottle.md
+        ├── chaos-to-sae.md
+        └── mahjong.md
+</code></pre>
+
+<p><code>python gitbook-auto-summary.py eg2</code></p>
+
+<p>output SUMMARY-GitBook-auto-summary.md:</p>
+
+<pre><code># Summary
+
+- [README](./README.md)
+- for-myself-at-16
+  - [README](for-myself-at-16/README.md)
+  - [SUMMARY](for-myself-at-16/SUMMARY.md)
+- python-1-to-n
+  - chaos-to-telegram
+    - [telegram](python-1-to-n/chaos-to-telegram/telegram.md)
+  - gitbook-auto-summary
+    - [argparse](python-1-to-n/gitbook-auto-summary/argparse.md)
+    - [gitbook-auto-summary](python-1-to-n/gitbook-auto-summary/gitbook-auto-summary.md)
+    - [os-and-os-path](python-1-to-n/gitbook-auto-summary/os-and-os-path.md)
+  - mahjong
+    - [chaos-to-bottle](python-1-to-n/mahjong/chaos-to-bottle.md)
+    - [chaos-to-sae](python-1-to-n/mahjong/chaos-to-sae.md)
+    - [mahjong](python-1-to-n/mahjong/mahjong.md)
+  - [README](python-1-to-n/README.md)
+  - [SUMMARY](python-1-to-n/SUMMARY.md)
+
+</code></pre>
+
+<p>Note: </p>
+
+<ul>
+<li>SUMMARY.md in subdirectories is not ignored.</li>
+<li>Directories with no .md file are ignored.</li>
+</ul>
+
+<h3>
+<a id="-a---append" class="anchor" href="#-a---append" aria-hidden="true"><span class="octicon octicon-link"></span></a>-a, --append</h3>
+
+<p>eg3. folder tree:</p>
+
+<pre><code>eg3.
+├── README.md
+├── SUMMARY.md
+├── concept-and-definition.md
+├── language-secret.md
+
+former SUMMARY.md in eg3:
+
+# Summary
+
+- [语言的诡计](./language-secret.md)
+- [README](./README.md)
+
+</code></pre>
+
+<p><code>python gitbook-auto-summary.py -a eg3</code></p>
+
+<p>output SUMMARY-GitBook-auto-summary.md:</p>
+
+<pre><code># Summary
+
+- [concept-and-definition](./concept-and-definition.md)
+- [语言的诡计](./language-secret.md)
+- [README](./README.md)
+
+</code></pre>
+
+<p>Note:</p>
+
+<ul>
+<li>Former link name of language-secret.md (语言的诡计) is preserved.</li>
+</ul>
+
+<h3>
+<a id="-o---overwrite" class="anchor" href="#-o---overwrite" aria-hidden="true"><span class="octicon octicon-link"></span></a>-o, --overwrite</h3>
+
+<p>Output file is the same, while script overwrite SUMMARY.md.</p>
+
+<p>DO take care before overwrite!</p>
       </section>
     </div>
 
